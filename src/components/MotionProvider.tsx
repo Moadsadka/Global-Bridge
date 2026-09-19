@@ -37,19 +37,55 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
     gsap.ticker.add(raf);
     gsap.ticker.lagSmoothing(0);
 
+    // Same-page links jump instantly by default, which reads badly against
+    // smooth scrolling everywhere else. Hand them to Lenis instead, offset so
+    // the section heading clears the sticky bar.
+    const onAnchorClick = (event: MouseEvent) => {
+      const link = (event.target as HTMLElement)?.closest?.<HTMLAnchorElement>(
+        'a[href^="#"]',
+      );
+      if (!link) return;
+
+      const id = link.getAttribute("href");
+      if (!id || id === "#") return;
+
+      const target = document.querySelector(id);
+      if (!target) return;
+
+      event.preventDefault();
+      lenis.scrollTo(target as HTMLElement, { offset: -88, duration: 1.2 });
+      history.pushState(null, "", id);
+    };
+
+    document.addEventListener("click", onAnchorClick);
+
+    // How each reveal variant starts. Every one of them is a transform and an
+    // opacity, nothing that triggers layout.
+    const from: Record<string, gsap.TweenVars> = {
+      rise: { y: 26 },
+      fade: {},
+      scale: { y: 18, scale: 0.985 },
+      left: { x: -22 },
+    };
+    const restingState = { y: 0, x: 0, scale: 1, opacity: 1 };
+
+    const variantOf = (el: HTMLElement) =>
+      from[el.dataset.animate || "rise"] ?? from.rise;
+
     const ctx = gsap.context(() => {
+      // Set every element to its own starting pose before anything animates.
+      gsap.utils.toArray<HTMLElement>("[data-animate]").forEach((el) => {
+        gsap.set(el, variantOf(el));
+      });
+
       // Grouped reveals: children of a [data-animate-group] stagger together,
-      // anything else rises on its own.
+      // anything else comes in on its own.
       gsap.utils.toArray<HTMLElement>("[data-animate-group]").forEach((group) => {
-        const items = gsap.utils.toArray<HTMLElement>(
-          "[data-animate]",
-          group,
-        );
+        const items = gsap.utils.toArray<HTMLElement>("[data-animate]", group);
         if (!items.length) return;
 
         gsap.to(items, {
-          opacity: 1,
-          y: 0,
+          ...restingState,
           duration: 0.9,
           ease: "power3.out",
           stagger: 0.08,
@@ -62,20 +98,42 @@ export function MotionProvider({ children }: { children: React.ReactNode }) {
         .filter((el) => !el.closest("[data-animate-group]"))
         .forEach((el) => {
           gsap.to(el, {
-            opacity: 1,
-            y: 0,
+            ...restingState,
             duration: 0.9,
             ease: "power3.out",
             scrollTrigger: { trigger: el, start: "top 86%", once: true },
           });
         });
+
+      // Headings that assemble a word at a time.
+      gsap.utils
+        .toArray<HTMLElement>('[data-reveal="words"]')
+        .forEach((heading) => {
+          const words = gsap.utils.toArray<HTMLElement>("[data-word]", heading);
+          if (!words.length) return;
+
+          // fromTo so the tween owns both ends of yPercent. A set() plus a to()
+          // leaves the start value in play if anything else touches y, and the
+          // words settle a full line-height below where they belong.
+          gsap.fromTo(
+            words,
+            { yPercent: 108, opacity: 0 },
+            {
+              yPercent: 0,
+              opacity: 1,
+              duration: 0.85,
+              ease: "power3.out",
+              stagger: 0.055,
+              scrollTrigger: { trigger: heading, start: "top 88%", once: true },
+            },
+          );
+        });
     });
 
-    // Elements start offset; the tweens above bring them home.
-    gsap.set("[data-animate]", { y: 24 });
     ScrollTrigger.refresh();
 
     return () => {
+      document.removeEventListener("click", onAnchorClick);
       ctx.revert();
       gsap.ticker.remove(raf);
       lenis.destroy();

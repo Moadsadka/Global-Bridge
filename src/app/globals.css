@@ -100,13 +100,15 @@ html.lenis body {
  * animate them — .js-ready is set by the motion provider on mount. Without
  * it, and under reduced motion, everything renders at rest.
  */
-.js-ready [data-animate] {
+.js-ready [data-animate],
+.js-ready [data-reveal="words"] [data-word] {
   opacity: 0;
   will-change: transform, opacity;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .js-ready [data-animate] {
+  .js-ready [data-animate],
+  .js-ready [data-reveal="words"] [data-word] {
     opacity: 1;
     transform: none !important;
     will-change: auto;

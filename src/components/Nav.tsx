@@ -11,9 +11,22 @@ import { nav, company } from "@/content/site";
  */
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    let last = window.scrollY;
+
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 8);
+      // Retreat on the way down, return the moment the reader scrolls back up.
+      // The threshold keeps small jitters from flickering the bar.
+      if (Math.abs(y - last) > 6) {
+        setHidden(y > last && y > 140);
+        last = y;
+      }
+    };
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -21,7 +34,9 @@ export function Nav() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-colors duration-300 ${
+      className={`sticky top-0 z-50 transition-[transform,background-color,border-color] duration-300 ease-out will-change-transform ${
+        hidden ? "-translate-y-full" : "translate-y-0"
+      } ${
         scrolled
           ? "border-b border-linen bg-paper/85 backdrop-blur-md"
           : "border-b border-transparent bg-transparent"

@@ -1,3 +1,4 @@
+import { RevealText } from "./RevealText";
 import { socialProof, testimonials } from "@/content/site";
 
 /**
@@ -11,12 +12,10 @@ export function SocialProof() {
   return (
     <section className="px-6 py-20">
       <div className="mx-auto max-w-[1200px]" data-animate-group>
-        <h2
-          data-animate
+        <RevealText
+          text={socialProof.heading}
           className="max-w-[22ch] text-heading-sm font-semibold leading-[1.15] tracking-[-0.01em] text-espresso sm:text-heading"
-        >
-          {socialProof.heading}
-        </h2>
+        />
 
         <div
           data-animate

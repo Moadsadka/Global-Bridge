@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { RevealText } from "./RevealText";
 import { services } from "@/content/site";
 
 /**
@@ -24,12 +25,10 @@ export function ServiceCards() {
   return (
     <section id="services" className="py-20">
       <div className="mx-auto mb-12 max-w-[1200px] px-6" data-animate-group>
-        <h2
-          data-animate
+        <RevealText
+          text="Four services, arranged as one itinerary"
           className="max-w-[20ch] text-heading-sm font-semibold leading-[1.15] tracking-[-0.01em] text-espresso sm:text-heading"
-        >
-          Four services, arranged as one itinerary
-        </h2>
+        />
       </div>
 
       {/*
@@ -52,7 +51,7 @@ export function ServiceCards() {
           return (
             <article
               key={service.title}
-              data-animate
+              data-animate="scale"
               className="group w-[300px] shrink-0 snap-start overflow-hidden rounded-[var(--radius-cards)] border border-linen bg-snow transition-transform duration-500 ease-out will-change-transform hover:-translate-y-1.5 sm:w-[340px]"
             >
               <div

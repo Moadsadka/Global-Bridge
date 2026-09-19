@@ -76,14 +76,17 @@ export function RotatingWord({
         },
       });
 
+      // The two words overlap just enough to hand over. Too much overlap reads
+      // as two words fighting for the line; too little leaves the headline with
+      // a visible hole where the word should be.
       timeline
-        .to(box, { width: widthOf(words[next]), duration: 0.55, ease: "power3.inOut" }, 0)
-        .to(word, { yPercent: -110, opacity: 0, duration: 0.45, ease: "power3.in" }, 0)
+        .to(box, { width: widthOf(words[next]), duration: 0.5, ease: "power3.inOut" }, 0)
+        .to(word, { yPercent: -105, opacity: 0, duration: 0.34, ease: "power2.in" }, 0)
         .fromTo(
           incoming,
-          { yPercent: 110, opacity: 0 },
-          { yPercent: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
-          0.12,
+          { yPercent: 105, opacity: 0 },
+          { yPercent: 0, opacity: 1, duration: 0.5, ease: "power3.out" },
+          0.17,
         );
     };
 
@@ -100,8 +103,8 @@ export function RotatingWord({
   return (
     <span
       ref={boxRef}
-      className="relative inline-flex overflow-hidden align-bottom -mb-[0.2em]"
-      style={{ height: "1.32em" }}
+      className="relative inline-flex overflow-hidden align-bottom -mb-[0.14em]"
+      style={{ height: "1.2em" }}
     >
       <span
         ref={wordRef}

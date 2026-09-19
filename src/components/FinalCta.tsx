@@ -1,3 +1,4 @@
+import { RevealText } from "./RevealText";
 import { finalCta, company } from "@/content/site";
 
 /** Closing call to action on a dark surface. */
@@ -8,12 +9,10 @@ export function FinalCta() {
         className="mx-auto max-w-[1200px] rounded-[var(--radius-cards)] bg-espresso px-8 py-20 text-center sm:px-16"
         data-animate-group
       >
-        <h2
-          data-animate
+        <RevealText
+          text={finalCta.heading}
           className="mx-auto max-w-[18ch] text-heading-sm font-semibold leading-[1.15] tracking-[-0.01em] text-cream sm:text-heading-lg"
-        >
-          {finalCta.heading}
-        </h2>
+        />
         <p
           data-animate
           className="mx-auto mt-6 max-w-[52ch] text-body-lg text-taupe"

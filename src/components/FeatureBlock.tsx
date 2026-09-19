@@ -1,3 +1,4 @@
+import { RevealText } from "./RevealText";
 import { friction, testimonials } from "@/content/site";
 
 /**
@@ -12,12 +13,10 @@ export function FeatureBlock() {
         data-animate-group
       >
         <div>
-          <h2
-            data-animate
+          <RevealText
+            text={friction.heading}
             className="max-w-[18ch] text-heading-sm font-semibold leading-[1.15] tracking-[-0.01em] text-espresso sm:text-heading"
-          >
-            {friction.heading}
-          </h2>
+          />
 
           {/* Anchors the column so the dark list does not sit beside empty canvas. */}
           <figure
@@ -41,7 +40,7 @@ export function FeatureBlock() {
           {friction.items.map((item) => (
             <li
               key={item.rest}
-              data-animate
+              data-animate="left"
               className="flex items-center gap-4 border-b border-white/10 py-5 last:border-b-0"
             >
               <span
