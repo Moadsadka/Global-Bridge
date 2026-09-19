@@ -110,7 +110,27 @@ export const testimonials = [
     name: "Chief Executive",
     role: "Industrial group",
   },
+  {
+    quote:
+      "A schedule changed at midnight and the aircraft, the driver and the hotel had all moved before morning.",
+    name: "Chief of Staff",
+    role: "Family office",
+  },
 ];
+
+export const socialProof = {
+  heading: "Trusted with itineraries that cannot slip",
+  // TODO: replace with the client's real partner or client logos. Left as
+  // empty slots deliberately — inventing logos would imply endorsements that
+  // do not exist.
+  logoSlots: 5,
+};
+
+export const imageBreak = {
+  // TODO: replace with a full-bleed photograph — a terminal, an aircraft
+  // interior or a Valencia cityscape.
+  caption: "Valencia · Tripoli",
+};
 
 export const finalCta = {
   heading: "One call and the itinerary is handled",
