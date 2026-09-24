@@ -49,7 +49,12 @@ byte offset, so changing any string there means rewriting both files.
 
 ## Still to do
 
-- Replace the template's stock photography. `tools/photos.py` lists every
-  slot and its shape; drop a file into `assets/photos/` and re-run it.
+- Replace the stand-in photography with Global Bridge's own. Fifteen of the
+  sixteen slots currently hold an Unsplash photograph, served from Unsplash's
+  CDN and credited in `assets/photos/CREDITS.md`; the about hero still holds
+  the template's, because it is a cut-out and needs an alpha channel. Drop a
+  file into `assets/photos/` under the slot's name and re-run `photos.py`: a
+  real file always wins, and the stand-in and its credit line go away.
+  `tools/photos.py` lists every slot and the shape it wants.
 - Replace the placeholder statistics, testimonials and prices with real ones.
 - Have the legal pages reviewed; they keep the template's structure.
