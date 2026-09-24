@@ -200,10 +200,23 @@ def main() -> None:
                 path.write_text(swapped, encoding="utf-8")
                 touched += 1
 
+    # The page modules build some image sources as `location.origin + "<path>"`,
+    # which is right for a path and wrong for a URL: it would yield
+    # "https://gbinvestor.comhttps://images.unsplash.com/...". Where the slot is
+    # now served from a CDN, the origin is already in the string, so drop the
+    # prefix rather than the URL.
+    joins = 0
+    for path in files:
+        text = path.read_text(encoding="utf-8")
+        fixed = text.replace(f'location.origin+"{CDN}', f'"{CDN}')
+        if fixed != text:
+            path.write_text(fixed, encoding="utf-8")
+            joins += 1
+
     (PHOTOS / "CREDITS.md").write_text(credits(), encoding="utf-8")
 
     print(f"placed {len(ours)} of our photos and {len(stock)} stand-ins "
-          f"across {touched} files")
+          f"across {touched} files; unpicked an origin join in {joins}")
     if missing:
         print(f"{len(missing)} slots still on the template's image:")
         for name, shape, what in missing:
