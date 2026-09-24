@@ -9,3 +9,4 @@ python3 tools/rewrite-content.py  # wellness copy -> VIP travel copy
 python3 tools/rewrite-js.py       # and in the page modules React hydrates from
 python3 tools/rewrite-cms.py      # the same, inside Framer's CMS data files
 python3 tools/rewrite-meta.py     # and inside the site search index
+python3 tools/photos.py           # and the stock photography -> ours

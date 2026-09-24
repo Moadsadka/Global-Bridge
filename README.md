@@ -38,6 +38,7 @@ Drop a clean export in place and run:
     rewrite-js.py       the same copy inside the page modules
     rewrite-cms.py      ...and inside Framer's CMS records
     rewrite-meta.py     ...and inside the site search index
+    photos.py           the template's stock photography -> ours
 
 Each stage expects the untouched template, so always start from a clean
 export rather than re-running over an already-rebranded tree.
@@ -48,6 +49,7 @@ byte offset, so changing any string there means rewriting both files.
 
 ## Still to do
 
-- Replace the template's stock photography.
+- Replace the template's stock photography. `tools/photos.py` lists every
+  slot and its shape; drop a file into `assets/photos/` and re-run it.
 - Replace the placeholder statistics, testimonials and prices with real ones.
 - Have the legal pages reviewed; they keep the template's structure.
